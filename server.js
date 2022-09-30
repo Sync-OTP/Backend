@@ -31,7 +31,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(require("./controllers/SocketArchitecture/Websockets")(io));
+app.use(require("./controllers/socketArchitecture/webSockets")(io));
 
 app.get("/", (req, res) => {
   res.status(201).json({
