@@ -18,7 +18,6 @@ const io = new Server(httpServer, {
   },
 });
 
-
 app.use(express.json());
 
 app.use(function (req, res, next) {
@@ -33,6 +32,12 @@ app.use(function (req, res, next) {
 });
 
 app.use(require("./controllers/SocketArchitecture/Websockets")(io));
+
+app.get("/", (req, res) => {
+  res.status(201).json({
+    message: "Hello World",
+  });
+});
 
 app.post("/api/message", (req, res) => {
   io.to("qwer").emit("message", { message: 9876 });
