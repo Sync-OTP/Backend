@@ -11,8 +11,12 @@
 //   });
 // });
 
-fetch("http://3.109.56.163:5000/api/message", {
+fetch("http://localhost:5000/api/message", {
   method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
   body: JSON.stringify({
     otp: 123,
   }),
