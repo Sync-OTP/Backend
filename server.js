@@ -42,6 +42,7 @@ app.get("/", (req, res) => {
 app.post("/api/message", (req, res) => {
   try {
     console.log("Sent Succesfully");
+    console.log(`OTP is ${req.body.otp}`);
     res.status(201).json({
       message: "Received Succesfully",
     });
