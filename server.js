@@ -1,62 +1,19 @@
-const dotenv = require("dotenv");
-const PORT = process.env.PORT || 5000;
-const { createServer } = require("http");
-const { Server } = require("socket.io");
-const morgan = require("morgan");
-const express = require("express");
-const cors = require("cors");
-const errorController = require("./controllers/errorController");
-const AppError = require("./utils/appError");
+const mongoose = require("mongoose");
+const app = require("./app");
 
-dotenv.config({ path: "./.env" });
+// require("dotenv").config();
 
-const app = express();
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: {
-    origin: ["*"],
-  },
-});
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname, "./.env") });
+// console.log(path.resolve(__dirname, "./.env"));
 
-app.use(function (req, res, next) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "*");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
-
-app.use(express.json());
-
-app.use(require("./controllers/socketArchitecture/webSockets")(io));
-
-app.get("/", (req, res) => {
-  res.status(201).json({
-    message: "Hello World 2",
-  });
-});
-
-app.post("/api/message", (req, res) => {
-  try {
-    console.log("Sent Succesfully");
-    console.log(`OTP is ${req.body.otp}`);
-    res.status(201).json({
-      message: "Received Succesfully",
-    });
-  } catch (error) {
-    console.log(error);
+mongoose.connect(
+  process.env.DB_CONNECTION,
+  { useNewUrlParser: true, maxPoolSize: 100, minPoolSize: 2 },
+  () => {
+    console.log("Connected to DataBase");
   }
-});
+);
 
-app.use(errorController);
-
-morgan.token("req-headers", function (req, res) {
-  return JSON.stringify(req.headers);
-});
-
-httpServer.listen(PORT, () => {
-  console.log(`App running on port ${PORT}...`);
-});
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => console.log(`Server Up and Running on port ${PORT}...`));
