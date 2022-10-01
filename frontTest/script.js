@@ -11,12 +11,11 @@
 //   });
 // });
 
-
-fetch('http://localhost:5000/api/message', {
-  method:"POST",
-  body:JSON.stringify({
-    "otp":123,
-  })
+fetch("http://3.109.56.163:5000/api/message", {
+  method: "POST",
+  body: JSON.stringify({
+    otp: 123,
+  }),
 })
-  // .then((response) => response.json())
+  .then((response) => response.json())
   .then((data) => console.log(data));

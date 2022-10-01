@@ -35,15 +35,19 @@ app.use(require("./controllers/socketArchitecture/webSockets")(io));
 
 app.get("/", (req, res) => {
   res.status(201).json({
-    message: "Hello World",
+    message: "Hello World 2",
   });
 });
 
 app.post("/api/message", (req, res) => {
-  // io.to("qwer").emit("message", { message: 9876 });
-  res.status(201).json({
-    message: "Received Succesfully",
-  });
+  try {
+    console.log("Sent Succesfully");
+    res.status(201).json({
+      message: "Received Succesfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 app.use(errorController);
