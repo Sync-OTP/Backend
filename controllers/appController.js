@@ -3,6 +3,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.createOtp = catchAsync(async (req, res, next) => {
+  //checks if there is any pesent user
   let otp = await otpModel.findOne({ extensionId: req.body.extId });
 
   if (otp) {
