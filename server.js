@@ -1,5 +1,5 @@
 const dotenv = require("dotenv");
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 5000;
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const morgan = require("morgan");
@@ -14,11 +14,9 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:8081"],
+    origin: ["*"],
   },
 });
-
-app.use(express.json());
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -31,6 +29,8 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(express.json());
+
 app.use(require("./controllers/socketArchitecture/webSockets")(io));
 
 app.get("/", (req, res) => {
@@ -40,7 +40,10 @@ app.get("/", (req, res) => {
 });
 
 app.post("/api/message", (req, res) => {
-  io.to("qwer").emit("message", { message: 9876 });
+  // io.to("qwer").emit("message", { message: 9876 });
+  res.status(201).json({
+    message: "Received Succesfully",
+  });
 });
 
 app.use(errorController);
